@@ -3,9 +3,12 @@ import Body from "./components/Body";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
 import Page404 from "./components/Page404";
+import { Provider } from "react-redux";
+import aapStore from "./utils/appStore";
 
 function App() {
   return (
+    <Provider store={aapStore}>
     <BrowserRouter basename="/">
       <Routes>
         <Route path="/" element={<Body />}>
@@ -16,6 +19,7 @@ function App() {
         </Route>
       </Routes>
     </BrowserRouter>
+    </Provider>
   );
 }
 
