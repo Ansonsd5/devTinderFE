@@ -7,7 +7,7 @@ const Body = () => {
   return (
     <div className="d-flex flex-col ">
       <Nav />
-      <div className="h-screen">
+      <div className="h-[70vh] grid place-content-center">
       <Outlet />
 
       </div>
