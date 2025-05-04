@@ -1,7 +1,13 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const dispatch = useDispatch();
+    const navigate = useNavigate();
+    // const user = useSelector(store => store.user);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const handleInput = (e) => {
@@ -11,6 +17,7 @@ const Login = () => {
   };
 
   const handleLogin = async (email, password) => {
+    
     try {
       const res = await axios.post(
         "http://localhost:7777/login",
@@ -20,11 +27,20 @@ const Login = () => {
         },
         { withCredentials: true }
       );
+      
+      dispatch(addUser(res.data));
+      if(res.status === 200){
+        return navigate("/")
+      }
+
       console.log("resss*****", res);
     } catch (err) {
       console.error(`FE ERROR :: ${err}`);
     }
   };
+
+  
+
   return (
     <div className="card card-border bg-base-200 w-96 mx-auto mt-4">
       <div className="card-body">

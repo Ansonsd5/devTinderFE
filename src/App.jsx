@@ -6,6 +6,8 @@ import Page404 from "./components/Page404";
 import { Provider } from "react-redux";
 import aapStore from "./utils/appStore";
 import Feed from "./components/Feed";
+import Connections from "./components/Connections";
+import RequestPage from "./components/RequestPage";
 
 function App() {
   return (
@@ -16,6 +18,9 @@ function App() {
           <Route path="/" element={<Feed/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile/>}/>
+          <Route path="/connections" element={<Connections/>}/>
+          <Route path="/request" element={<RequestPage/>}/>
+
           <Route path="/*" element={<Page404/>}/>
       
         </Route>

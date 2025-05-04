@@ -10,17 +10,10 @@ import { useDispatch, useSelector } from "react-redux";
 const Body = () => {
 const dispatch = useDispatch();
 const navigate = useNavigate();
-const user = useSelector(store =>store.user);
-const cookie = document?.cookie?.token;
-
-  useEffect(()=>{
-    if(!user && cookie){
-      fetchUser();
-
-    }
-  },[user])
+const userData = useSelector(store =>store.user);
 
   const fetchUser = async () => {
+    if (userData) return;
     try {
       const res = await axios.get(`${BASE_URL}/profile/view`, {
         withCredentials: true,
@@ -37,12 +30,14 @@ const cookie = document?.cookie?.token;
       }
     }
   };
-
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   return (
     <div className="d-flex flex-col ">
       <Nav />
-      <div className="h-[70vh] grid place-content-center">
+      <div className="h-[100vh] grid place-content-center">
       <Outlet />
 
       </div>
