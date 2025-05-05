@@ -11,11 +11,11 @@ const EditProfile = ({user}) => {
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setlastName] = useState(user.lastName);
   
-  const [age, setAge] = useState(user.age);
-  const [gender, setGender] = useState(user.gender);
-  const [photoUrl, setPhotoUrl] = useState(user.photoUrl);
-  const [about, setAbout] = useState(user.about);
-  const [skills,setSkills] = useState(user.skills);
+  const [age, setAge] = useState(user.age || '');
+  const [gender, setGender] = useState(user.gender || '');
+  const [photoUrl, setPhotoUrl] = useState(user.photoUrl || '');
+  const [about, setAbout] = useState(user.about || '');
+  const [skills,setSkills] = useState(user.skills || []);
   const [errmsg,setErrMsg] = useState("");
   const [successMsg,setSuccessMsg] = useState("");
 

@@ -10,6 +10,7 @@ const FeedCard = ({ user }) => {
     user;
 
   console.log("inside cards", skills);
+  const isProfile = window.location.pathname === '/profile';
 
   const handleStatus = async (id, status) => {
     try {
@@ -38,12 +39,12 @@ const FeedCard = ({ user }) => {
         </h2>
         <p>{about}</p>
         {typeof skills === "object" &&
-          skills?.map((skill) => {
-            return <kbd className="kbd kbd-md">{skill}</kbd>;
+          skills?.map((skill,key) => {
+            return <kbd className="kbd kbd-md" key={key}>{skill}</kbd>;
           })}
       </div>
-      <div className="grid grid-cols-2">
-        {console.log("ID", _id)}
+     { !isProfile &&<div className="grid grid-cols-2">
+        
         <button
           className="btn btn-primary"
           id={_id}
@@ -57,7 +58,7 @@ const FeedCard = ({ user }) => {
         >
           Interested
         </button>
-      </div>
+      </div>}
     </div>
   );
 };
