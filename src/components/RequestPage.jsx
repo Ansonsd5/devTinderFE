@@ -31,7 +31,7 @@ const RequestPage = () => {
           // console.log("DATA",reviewRequest)
           reviewRequest && reviewRequest?.map((req,key) => <article key={key}>
             {console.log("inside map",req)}
-              {req && <RequestCard from={req?.fromUserId}/>}
+              {req && <RequestCard from={req?.fromUserId} reqID={req?._id}/>}
             </article>
           )
         }

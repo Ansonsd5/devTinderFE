@@ -35,7 +35,7 @@ const Connections = () => {
                 return (
                   <>
                 
-                    connection && <ConnectionCard  {...connection} />
+                    {connection && <ConnectionCard  {...connection} />}
                   </>
                 );
               })}

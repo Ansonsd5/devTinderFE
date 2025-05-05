@@ -1,9 +1,11 @@
 import axios from "axios";
 import React from "react";
 import { BASE_URL } from "../constant/urls";
+import { useDispatch } from "react-redux";
+import { removeRequest } from "../utils/requestSlice";
 
 const RequestCard = (fromData) => {
-  console.log("@@@@@@@@@@fromData",fromData)
+  const dispatch = useDispatch();
   const { photoUrl, _id, firstName, about } =fromData.from;
   const rejected = "rejected";
   const accepted = "accepted";
@@ -13,6 +15,7 @@ const RequestCard = (fromData) => {
       try {
         const res =await axios.post(`${BASE_URL}/request/review/${reqStatus}/${id}`,{},{withCredentials:true});
         console.log("res",res)
+        dispatch(removeRequest(id));
       } catch (error) {
         console.error(error);
       }
@@ -32,13 +35,13 @@ const RequestCard = (fromData) => {
          <div className="card-actions justify-between flex-1/2">
           <button
             className="btn btn-secondary"
-            onClick={() => handleConnection(_id, rejected)}
+            onClick={() => handleConnection(fromData.reqID, rejected)}
           >
             Reject
           </button>
           <button
             className="btn btn-primary"
-            onClick={() => handleConnection(_id, accepted)}
+            onClick={() => handleConnection(fromData.reqID, accepted)}
           >
             Accept
           </button>

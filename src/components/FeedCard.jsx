@@ -1,17 +1,32 @@
+import axios from "axios";
 import React from "react";
+import { BASE_URL } from "../constant/urls";
+import { useDispatch } from "react-redux";
+import { removeUserFeed } from "../utils/feedSlice";
 
-const FeedCard = ({user}) => {
-  const { _id, firstName, lastName, photoUrl, age, gender, about ,skills} = user;
-  
-  console.log("inside cards",skills)
+const FeedCard = ({ user }) => {
+  const dispacth = useDispatch();
+  const { _id, firstName, lastName, photoUrl, age, gender, about, skills } =
+    user;
 
-  const handleInterested = (id) =>{
-console.log("handleInterested",id)
-  }
+  console.log("inside cards", skills);
 
-  const handleIgnore = () =>{
-console.log("handleIgnore")
-  }
+  const handleStatus = async (id, status) => {
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/request/${status}/${id}`,
+        {},
+        { withCredentials: true }
+      );
+      console.log("REQUEST res", res);
+      if (res.status === 201) {
+        dispacth(removeUserFeed(id));
+      }
+    } catch (err) {
+      console.log("error", err);
+    }
+  };
+
   return (
     <div className="card bg-base-500 w-96 shadow-sm bg-black" id={_id}>
       <figure>
@@ -32,15 +47,17 @@ console.log("handleIgnore")
         <button
           className="btn btn-primary"
           id={_id}
-          onClick={() => handleIgnore()}
+          onClick={() => handleStatus(_id, "ignored")}
         >
           Ignore
         </button>
-        <button className="btn btn-secondary" onClick={handleInterested}>
+        <button
+          className="btn btn-secondary"
+          onClick={() => handleStatus(_id, "interested")}
+        >
           Interested
         </button>
       </div>
-      
     </div>
   );
 };
