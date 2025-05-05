@@ -36,7 +36,7 @@ const Feed = () => {
     <div>
       <h1>ALL feed</h1>
       <div className="grid grid-cols-2 gap-4">
-      {feed.length ? <FeedCard user={feed[0]} /> :<div>There is no feed to show you</div>}
+      {feed?.length ? <FeedCard user={feed[0]} /> :<div>There is no feed to show you</div>}
 
       </div>
     </div>
