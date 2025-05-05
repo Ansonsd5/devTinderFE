@@ -22,12 +22,13 @@ const userData = useSelector(store =>store.user);
         dispatch(addUser(res.data));
       }
     } catch (error) {
-      if (error.status === 401) {
-        return navigate("/login");
-      } else {
-        console.error(`FE ERROR :: `, error);
-        return navigate("/error");
-      }
+      // if (error.status === 401) {
+      //   return navigate("/onboarding");
+      // } else {
+      //   console.error(`FE ERROR :: `, error);
+      //   return navigate("/error");
+      // }
+      console.log("error"+error)
     }
   };
   useEffect(() => {

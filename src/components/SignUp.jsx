@@ -4,33 +4,40 @@ import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const SignUp = () => {
   const dispatch = useDispatch();
     const navigate = useNavigate();
     // const user = useSelector(store => store.user);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
+
   const handleInput = (e) => {
     const { name, value } = e.target;
     if (name === "email") setEmail(value);
     else if (name === "password") setPassword(value);
+    else if (name === "lastname") setLastName(value);
+    else if (name === 'firstname') setFirstName(value);
   };
 
-  const handleLogin = async (email, password) => {
+  const handleSignUp = async () => {
     
     try {
       const res = await axios.post(
-        "http://localhost:7777/login",
+        "http://localhost:7777/signup",
         {
           emailId: email,
           password: password,
+          firstName: firstName,
+          lastName:lastName
         },
         { withCredentials: true }
       );
       
       dispatch(addUser(res.data));
-      if(res.status === 200){
-        return navigate("/feed")
+      if(res.status === 201){
+        return navigate("/login")
       }
 
       console.log("resss*****", res);
@@ -48,6 +55,28 @@ const Login = () => {
           Login to account
         </h2>
         <div className="flex gap-4 flex-col">
+        <fieldset className="fieldset">
+            <legend className="fieldset-legend">First Name</legend>
+            <input
+              type="text"
+              name="firstname"
+              value={firstName}
+              className="input"
+              placeholder="Enter your first name"
+              onChange={(e) => handleInput(e)}
+            />
+          </fieldset>
+          <fieldset className="fieldset">
+            <legend className="fieldset-legend">Last Name</legend>
+            <input
+              type="text"
+              name="lastname"
+              value={lastName}
+              className="input"
+              placeholder="Enter your email"
+              onChange={(e) => handleInput(e)}
+            />
+          </fieldset>
           <fieldset className="fieldset">
             <legend className="fieldset-legend">Email</legend>
             <input
@@ -75,9 +104,9 @@ const Login = () => {
         <div className="card-actions justify-center pt-4">
           <button
             className="btn btn-primary "
-            onClick={() => handleLogin(email, password)}
+            onClick={() => handleSignUp()}
           >
-            Login
+            Sign Up
           </button>
         </div>
       </div>
@@ -85,4 +114,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;

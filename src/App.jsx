@@ -8,6 +8,8 @@ import aapStore from "./utils/appStore";
 import Feed from "./components/Feed";
 import Connections from "./components/Connections";
 import RequestPage from "./components/RequestPage";
+import Onboarding from "./components/Onboarding";
+import SignUp from "./components/SignUp";
 
 function App() {
   return (
@@ -15,11 +17,13 @@ function App() {
     <BrowserRouter basename="/">
       <Routes>
         <Route path="/" element={<Body />}>
-          <Route path="/" element={<Feed/>} />
+          <Route path="/feed" element={<Feed/>} />
           <Route path="/login" element={<Login />} />
+          <Route path="/onboarding" element={<Onboarding/>} />
           <Route path="/profile" element={<Profile/>}/>
           <Route path="/connections" element={<Connections/>}/>
           <Route path="/request" element={<RequestPage/>}/>
+          <Route path="/signup" element={<SignUp/>}/>
 
           <Route path="/*" element={<Page404/>}/>
       
