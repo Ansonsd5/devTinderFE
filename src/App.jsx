@@ -21,7 +21,7 @@ function App() {
           <Route path="/connections" element={<Connections/>}/>
           <Route path="/request" element={<RequestPage/>}/>
 
-          <Route path="/*" element={<Page404/>}/>
+          {/* <Route path="/*" element={<Page404/>}/> */}
       
         </Route>
       </Routes>

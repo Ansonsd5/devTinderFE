@@ -23,7 +23,7 @@ const Feed = () => {
     } catch (error) {
       console.error("FE ERROR :: " + error);
 
-      return navigator("/error");
+      // return navigator("/error");
     }
   };
 

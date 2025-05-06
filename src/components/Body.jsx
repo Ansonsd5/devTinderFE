@@ -26,7 +26,7 @@ const userData = useSelector(store =>store.user);
         return navigate("/login");
       } else {
         console.error(`FE ERROR :: `, error);
-        return navigate("/error");
+        // return navigate("/error");
       }
     }
   };
