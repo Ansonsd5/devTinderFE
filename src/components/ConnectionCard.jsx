@@ -6,7 +6,7 @@ const ConnectionCard = (fromData) => {
   ;
 
   return (
-    <div className="card bg-neutral text-neutral-content w-72" key={_id}>
+    <div className="card bg-neutral text-neutral-content w-72 my-4" key={_id}>
       <div className="p-4">
         <div className="flex  items-center text-center">
           <img

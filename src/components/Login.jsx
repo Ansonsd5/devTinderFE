@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../constant/urls";
@@ -8,7 +8,7 @@ import { BASE_URL } from "../constant/urls";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const user = useSelector(store => store.user);
+  const user = useSelector(store => store.user);
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -40,12 +40,28 @@ const Login = () => {
         withCredentials: true,
       });
 
-      if (isLogin && res.status === 200) {
-        dispatch(addUser(res.data));
-        return navigate("/feed");
-      } else {
+      if(res.status === 200) {
+        console.log("ressssssssss signup")
+        dispatch(addUser(res?.data));
+       return navigate("/")
+      }else{
         return navigate("/login");
       }
+      // navigate("/")
+      // console.log("Sign up response",res)
+      // if(!isLogin && res?.status === 201){
+      //   console.log("Should navigate from here")
+      //   navigate("/login")
+      // }
+
+      // console.log("*******",res)
+
+      // if (isLogin && res.status === 200) {
+      //   dispatch(addUser(res?.data));
+      //   return navigate("/");
+      // } else {
+      //   return navigate("/login");
+      // }
     } catch (err) {
       console.error(`FE ERROR :: ${err}`);
     }
@@ -113,7 +129,7 @@ const Login = () => {
             className="btn btn-primary "
             onClick={() => handleLogin(email, password)}
           >
-            Login
+           {isLogin ? "Login" : "Sign up"}
           </button>
         </div>
         <div className="p-4 text-center">

@@ -51,8 +51,8 @@ const EditProfile = ({user}) => {
       if (!data) return ;
       setErrMsg("");
      const res =  await axios.patch(`${BASE_URL}/profile/edit`,data , { withCredentials: true });
-     console.log("after update",res.data)
-     dispatch(addUser(res.data));
+     console.log("after update",res?.data?.loggedInUser)
+     dispatch(addUser(res?.data?.loggedInUser));
      setSuccessMsg(res.data.message)
    
       console.log("inside try",res)
