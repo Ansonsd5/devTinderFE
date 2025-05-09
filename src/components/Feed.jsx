@@ -3,12 +3,12 @@ import React, { useEffect } from "react";
 import { BASE_URL } from "../constant/urls";
 import { useDispatch, useSelector } from "react-redux";
 import { addUserFeed } from "../utils/feedSlice";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import FeedCard from "./FeedCard";
 
 const Feed = () => {
   const feed = useSelector((store) => store.feed);
-  const navigator = useNavigate();
+  // const navigator = useNavigate();
 
   const dispatch = useDispatch();
   console.log("feed from sytore", feed);

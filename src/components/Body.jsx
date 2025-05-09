@@ -4,13 +4,15 @@ import { Outlet, useNavigate } from "react-router-dom";
 import Footer from "./Footer";
 import axios from "axios";
 import { BASE_URL } from "../constant/urls";
-import { addUser } from "../utils/userSlice";
+import { addUser, removeUser } from "../utils/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { removeConnections } from "../utils/connectionSlice";
+import { emptyAllrequest } from "../utils/requestSlice";
 
 const Body = () => {
-const dispatch = useDispatch();
-const navigate = useNavigate();
-const userData = useSelector(store =>store.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const userData = useSelector((store) => store.user);
 
   const fetchUser = async () => {
     if (userData) return;
@@ -23,6 +25,9 @@ const userData = useSelector(store =>store.user);
       }
     } catch (error) {
       if (error.status === 401) {
+        dispatch(removeConnections());
+        dispatch(removeUser());
+        dispatch(emptyAllrequest());
         return navigate("/login");
       } else {
         console.error(`FE ERROR :: `, error);
@@ -35,13 +40,12 @@ const userData = useSelector(store =>store.user);
   }, []);
 
   return (
-    <div className="d-flex flex-col ">
+    <div className="flex flex-col min-h-screen  ">
       <Nav />
-      <div className="h-[100vh] grid place-content-center">
-      <Outlet />
-
+      <div className="flex-1 flex items-center justify-center mt-[64px]">
+        <Outlet />
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };
