@@ -8,6 +8,7 @@ import aapStore from "./utils/appStore";
 import Feed from "./components/Feed";
 import Connections from "./components/Connections";
 import RequestPage from "./components/RequestPage";
+import PremiumPage from "./components/PremiumPage";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Body />}>
           <Route path="/" element={<Feed/>} />
+          <Route path="/premium" element={<PremiumPage/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile/>}/>
           <Route path="/connections" element={<Connections/>}/>
