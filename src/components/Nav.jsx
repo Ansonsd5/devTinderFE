@@ -78,7 +78,10 @@ const Nav = () => {
                   <Link to="/connections">Connections</Link>
                 </li>
                 <li>
-                  <Link to="/request">Request</Link>
+                  <Link to="/request" className="capitalize">request</Link>
+                </li>
+                <li>
+                  <Link to="/premium" className="capitalize">premium</Link>
                 </li>
 
                 <li>
