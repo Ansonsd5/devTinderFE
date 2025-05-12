@@ -6,7 +6,6 @@ export default defineConfig({
   base: './',
   plugins: [tailwindcss(), react()],
   build: {
-    minify: 'terser',
     terserOptions: {
       compress: {
         drop_console: true,
