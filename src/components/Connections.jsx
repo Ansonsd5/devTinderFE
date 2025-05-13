@@ -17,27 +17,19 @@ const Connections = () => {
   };
 
   useEffect(() => {
-    // if (connections) return;
     getConnections();
   }, []);
   return (
-    <div>
+    <div className=" w-[70%]">
       <h1 className="flex justify-center">Connections</h1>
-      <div>
-        {console.log("connections**************", connections)}
+      <div className="">
         {connections?.length === 0 ? (
           "No Connections Found"
         ) : (
           <>
             {connections &&
               connections.map((connection) => {
-                console.log("inside connection map", connection);
-                return (
-                  <>
-                
-                    {connection && <ConnectionCard  {...connection} />}
-                  </>
-                );
+                return <>{connection && <ConnectionCard {...connection} />}</>;
               })}
           </>
         )}
