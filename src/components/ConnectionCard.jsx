@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const ConnectionCard = (fromData) => {
     console.log("&&&&&&fromdata",fromData)
@@ -6,8 +7,8 @@ const ConnectionCard = (fromData) => {
   ;
 
   return (
-    <div className="card bg-neutral text-neutral-content w-72 my-4" key={_id}>
-      <div className="p-4">
+    <div className="card bg-neutral text-neutral-content my-4 flex flex-row p-4 items-center" key={_id}>
+      <div className="p-4 w-full">
         <div className="flex  items-center text-center">
           <img
             className="h-8 w-8 rounded"
@@ -18,6 +19,10 @@ const ConnectionCard = (fromData) => {
         </div>
         <p>{about}</p>
       </div>
+      <Link to={`/chat/${_id}`}>
+       <button className="p-4 btn btn-primary">chat</button>
+      </Link>
+    
     </div>
   );
 };
