@@ -4,6 +4,7 @@ import { createSocketConnection } from "../utils/socket";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { BASE_URL } from "../constant/urls";
+import { formatToLocalTime } from "../utils/commonFunc";
 
 const Chat = () => {
   const { chatwithid } = useParams();
@@ -25,7 +26,10 @@ const Chat = () => {
 
     socket.on("messageReceived",({firstName,text})=>{
       console.log(firstName + " send " + text);
-      setMessages((messages) =>[...messages,{firstName,text}])
+      const utcString = new Date().toISOString();
+      const dateTime = formatToLocalTime(utcString);
+
+      setMessages((messages) =>[...messages,{firstName,text,dateTime}])
 
     })
 
@@ -48,8 +52,11 @@ const Chat = () => {
     if(chatRes){
 
     const chatData =  chatRes?.data?.messages?.map(msg =>{
-        const { senderId, text } = msg;
+        const { senderId, text, createdAt } = msg;
+        const dateTime = formatToLocalTime(createdAt);
+        
         return {firstName : senderId?.firstName,
+                dateTime,
           text
         }
       })
@@ -85,9 +92,9 @@ const Chat = () => {
           messages && messages.map((msg,key)=>{
             return <>
             <div className={`chat ${msg.firstName ===firstName ?"chat-end":"chat-start"} `} key={key}>
-          <div className={`${msg.firstName ===firstName ?'chat-bubble bg-[#2c5d4b]' :'chat-bubble'} `}>{msg.text}</div>
+          <div className={`${msg.firstName ===firstName ?'chat-bubble bg-[#2c5d4b]' :'chat-bubble'} `}>{msg.text}<span className="text-[8px] ml-2">{msg.dateTime}</span></div>
         </div>
-            {/* <span className="text-[8px] ml-2">{msg.formatedTime}</span> */}
+            
             </>
           })
         }
