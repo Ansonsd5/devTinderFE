@@ -1,70 +1,115 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../constant/urls";
+import { login, signUp } from "../config";
+import Input from "./Input";
+import validator from "validator";
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector(store => store.user);
   const [isLogin, setIsLogin] = useState(true);
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [firstName, setFirstName] = useState();
-  const [lastName, setlastName] = useState();
 
-  const handleInput = (e) => {
-    const { name, value } = e.target;
-    if (name === "email") setEmail(value);
-    else if (name === "password") setPassword(value);
-    else if (name === "firstname") setFirstName(value);
-    else if (name === "lastname") setlastName(value);
-  };
+  const [formData, setFormData] = useState(isLogin ? login : signUp);
 
-  const handleLogin = async (email, password) => {
+  console.log("formData", formData);
+
+  const handleLogin = async () => {
+    const values = Object.fromEntries(formData.map((f) => [f.id, f.value]));
     let URL = isLogin ? "login" : "signup";
-
+console.log("*****",!isLogin,values)
     const payload = {
-      emailId: email,
-      password: password,
-      ...(!isLogin && { firstName }),
-      ...(!isLogin && { lastName }),
+      emailId: values.email,
+      password: values.password,
+      ...(!isLogin && { firstName: values.firstname }),
+      ...(!isLogin && { lastName: values.lastname }),
     };
 
-    console.log("payload for signup", payload);
+    console.log("payload",payload)
 
     try {
       const res = await axios.post(`${BASE_URL}/${URL}`, payload, {
         withCredentials: true,
       });
 
-      if(res.status === 200) {
-        console.log("ressssssssss signup")
+      if (res.status === 200) {
+        console.log("ressssssssss signup");
         dispatch(addUser(res?.data));
-       return navigate("/")
-      }else{
+        return navigate("/");
+      } else {
         return navigate("/login");
       }
-      // navigate("/")
-      // console.log("Sign up response",res)
-      // if(!isLogin && res?.status === 201){
-      //   console.log("Should navigate from here")
-      //   navigate("/login")
-      // }
-
-      // console.log("*******",res)
-
-      // if (isLogin && res.status === 200) {
-      //   dispatch(addUser(res?.data));
-      //   return navigate("/");
-      // } else {
-      //   return navigate("/login");
-      // }
     } catch (err) {
       console.error(`FE ERROR :: ${err}`);
     }
+  };
+  const isFormValid = formData.every(
+    (field) => !field.error && !field.errorMessage && field.value
+  );
+
+  useEffect(() => {
+    setFormData(isLogin ? login : signUp);
+  }, [isLogin]);
+
+  const handleChange = (e, index) => {
+    const { id, value } = e.target;
+
+    setFormData((prev) => {
+      const updated = [...prev];
+      const field = { ...updated[index] };
+
+      const { minLength, maxLength } = field;
+      let error = false;
+      let errorMessage = "";
+
+      if (value.length < minLength) {
+        error = true;
+        errorMessage = `${field.label} should contain at least ${minLength} characters`;
+      } else if (value.length > maxLength) {
+        error = true;
+        errorMessage = `${field.label} should not exceed ${maxLength} characters`;
+      } else {
+        switch (id) {
+          case "email":
+            if (!validator.isEmail(value)) {
+              error = true;
+              if (!value.includes("@")) {
+                errorMessage = `Email should contain "@"`;
+              } else {
+                errorMessage = `Please enter a valid email`;
+              }
+            }
+            break;
+          case "password":
+            if (!validator.isStrongPassword(value)) {
+              error = true;
+              errorMessage =
+                "Password must be a combination of uppercase, lowercase, numbers, and symbols";
+            }
+            break;
+          default:
+            break;
+        }
+      }
+
+      if (
+        field.value === value &&
+        field.error === error &&
+        field.errorMessage === errorMessage
+      ) {
+        return prev;
+      }
+
+      field.value = value;
+      field.error = error;
+      field.errorMessage = errorMessage;
+      updated[index] = field;
+
+      return updated;
+    });
   };
 
   return (
@@ -74,62 +119,22 @@ const Login = () => {
           {isLogin ? "Sign in to GitHub" : "Sign up to GitHub"}
         </h2>
         <div className="flex gap-4 flex-col">
-          {!isLogin && (
-            <>
-              <fieldset className="fieldset">
-                <legend className="fieldset-legend">First Name</legend>
-                <input
-                  type="text"
-                  name="firstname"
-                  value={firstName}
-                  className="input"
-                  placeholder="Enter your first name"
-                  onChange={(e) => handleInput(e)}
-                />
-              </fieldset>
-              <fieldset className="fieldset">
-                <legend className="fieldset-legend">Last Name</legend>
-                <input
-                  type="text"
-                  name="lastname"
-                  value={lastName}
-                  className="input"
-                  placeholder="Enter your last name"
-                  onChange={(e) => handleInput(e)}
-                />
-              </fieldset>{" "}
-            </>
-          )}
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Email address</legend>
-            <input
-              type="email"
-              name="email"
-              value={email}
-              className="input"
-              placeholder="Enter your email"
-              onChange={(e) => handleInput(e)}
-            />
-          </fieldset>
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend ">Password</legend>
-            <input
-              type="password"
-              name="password"
-              value={password}
-              className="input"
-              placeholder="Enter your password"
-              onChange={(e) => handleInput(e)}
-            />
-          </fieldset>
+          {formData &&
+            formData.map((field, index) => {
+              console.log("field", field);
+              return (
+                <Input {...field} onChange={(e) => handleChange(e, index)} />
+              );
+            })}
         </div>
 
         <div className="card-actions justify-center pt-4">
           <button
+            disabled={!isFormValid}
             className="btn btn-primary "
-            onClick={() => handleLogin(email, password)}
+            onClick={() => handleLogin()}
           >
-           {isLogin ? "Login" : "Sign up"}
+            {isLogin ? "Login" : "Sign up"}
           </button>
         </div>
         <div className="p-4 text-center">
