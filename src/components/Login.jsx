@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +16,8 @@ const Login = () => {
   const [formData, setFormData] = useState(isLogin ? login : signUp);
 
   console.log("formData", formData);
+  const user = useSelector(store =>store.user);
+
 
   const handleLogin = async () => {
     const values = Object.fromEntries(formData.map((f) => [f.id, f.value]));
@@ -116,7 +118,7 @@ console.log("*****",!isLogin,values)
     <div className="card card-border bg-base-200 w-96 mx-auto mt-4">
       <div className="card-body">
         <h2 className="card-title capitalize justify-center">
-          {isLogin ? "Sign in to GitHub" : "Sign up to GitHub"}
+          {isLogin ? "Sign in to DevTinder" : "Sign up to DevTinder"}
         </h2>
         <div className="flex gap-4 flex-col">
           {formData &&

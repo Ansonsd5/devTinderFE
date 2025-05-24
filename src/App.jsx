@@ -10,6 +10,7 @@ import Connections from "./components/Connections";
 import RequestPage from "./components/RequestPage";
 import PremiumPage from "./components/PremiumPage";
 import Chat from "./components/Chat";
+import NoAuthRoute from "./components/NoAuthRoute";
 
 function App() {
   return (
@@ -17,9 +18,13 @@ function App() {
     <BrowserRouter basename="/">
       <Routes>
         <Route path="/" element={<Body />}>
-          <Route path="/" element={<Feed/>} />
+          <Route index element={<Feed/>} />
+          
           <Route path="/premium" element={<PremiumPage/>} />
-          <Route path="/login" element={<Login />} />
+          <Route element={<NoAuthRoute />}>
+              <Route path="login" element={<Login />} />
+            </Route>
+
           <Route path="/profile" element={<Profile/>}/>
           <Route path="/connections" element={<Connections/>}/>
           <Route path="/request" element={<RequestPage/>}/>
