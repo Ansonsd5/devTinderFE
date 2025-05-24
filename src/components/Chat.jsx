@@ -87,17 +87,30 @@ const Chat = () => {
   return (
     <div className="chat-main  w-[100%] flex flex-col  p-4 border-2 border-primary m-4">
       <div className="flex-grow overflow-y-auto">
-
-        {
-          messages && messages.map((msg,key)=>{
-            return <>
-            <div className={`chat ${msg.firstName ===firstName ?"chat-end":"chat-start"} `} key={key}>
-          <div className={`${msg.firstName ===firstName ?'chat-bubble bg-[#2c5d4b]' :'chat-bubble'} `}>{msg.text}<span className="text-[8px] ml-2">{msg.dateTime}</span></div>
-        </div>
-            
-            </>
-          })
-        }
+        {messages &&
+          messages.map((msg, key) => {
+            return (
+              <>
+                <div
+                  className={`chat ${
+                    msg.firstName === firstName ? "chat-end" : "chat-start"
+                  } `}
+                  key={key}
+                >
+                  <div
+                    className={`${
+                      msg.firstName === firstName
+                        ? "chat-bubble bg-[#2c5d4b]"
+                        : "chat-bubble"
+                    } `}
+                  >
+                    {msg.text}
+                    <span className="text-[8px] ml-2">{msg.dateTime}</span>
+                  </div>
+                </div>
+              </>
+            );
+          })}
         {/* <div className="chat chat-start">
           <div className="chat-bubble">{messages.text}</div>
         </div> */}
@@ -111,10 +124,24 @@ const Chat = () => {
           onChange={(e) => setNewMessage(e.target.value)}
           className="textarea w-full"
           placeholder="Message"
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              if (newMessage.trim()) {
+                sendMessage();
+              }
+            }
+          }}
         ></input>
-        {newMessage && <button className="btn btn-info" disabled={!newMessage} onClick={sendMessage}>
-          send
-        </button>}
+        {newMessage && (
+          <button
+            className="btn btn-info"
+            disabled={!newMessage}
+            onClick={sendMessage}
+          >
+            send
+          </button>
+        )}
       </div>
     </div>
   );
