@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../constant/urls";
@@ -16,13 +16,11 @@ const Login = () => {
   const [formData, setFormData] = useState(isLogin ? login : signUp);
 
   console.log("formData", formData);
-  const user = useSelector(store =>store.user);
 
 
   const handleLogin = async () => {
     const values = Object.fromEntries(formData.map((f) => [f.id, f.value]));
     let URL = isLogin ? "login" : "signup";
-console.log("*****",!isLogin,values)
     const payload = {
       emailId: values.email,
       password: values.password,
@@ -30,15 +28,12 @@ console.log("*****",!isLogin,values)
       ...(!isLogin && { lastName: values.lastname }),
     };
 
-    console.log("payload",payload)
-
     try {
       const res = await axios.post(`${BASE_URL}/${URL}`, payload, {
         withCredentials: true,
       });
 
       if (res.status === 200) {
-        console.log("ressssssssss signup");
         dispatch(addUser(res?.data));
         return navigate("/");
       } else {
