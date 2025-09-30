@@ -36,13 +36,14 @@ const Body = () => {
     }
   };
   useEffect(() => {
-    fetchUser();
+   userData && fetchUser();
   }, []);
 
   return (
     <div className="flex flex-col min-h-screen  ">
       <Nav />
       <div className="flex-1 flex items-center justify-center mt-[64px]">
+        
         <Outlet />
       </div>
       <Footer />
